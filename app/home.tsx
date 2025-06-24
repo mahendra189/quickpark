@@ -1,8 +1,9 @@
-import { View } from "@/components/Themed"
+import { View } from "@/components/Themed";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+
 import { Platform, Pressable, SafeAreaView, ScrollView, Text } from "react-native"
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
 import { Icon, SearchIcon } from "@/components/ui/icon";
