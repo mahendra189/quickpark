@@ -69,7 +69,7 @@ function RootLayoutNav() {
             }}
           />
           <Stack.Screen
-            name="space"
+            name="spacefinder"
             options={{
               headerShown: false,
             }}

@@ -23,10 +23,10 @@ const Home = () => {
     const [showDrawer, setShowDrawer] = useState(false);
     const [category, setCategory] = useState("car");
     const [duration, setDuration] = useState({
-        type:"hour",
-        value:1
+        type: "hour",
+        value: 1
     });
-    const [vehicleCount,setVehicleCount] = useState(1);
+    const [vehicleCount, setVehicleCount] = useState(1);
     return (
         <SafeAreaView className="flex-1 bg-background-100">
 
@@ -148,17 +148,17 @@ const Home = () => {
                             {/* dropdown for duration selection */}
                             <Box className="flex-row gap-2" >
 
-                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${duration.type == "hour" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setDuration({...duration,type:"hour"})}>
+                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${duration.type == "hour" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setDuration({ ...duration, type: "hour" })}>
                                     <Text className="text-typography-800 text-sm">Hour</Text>
                                 </Pressable>
-                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${duration.type == "month" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setDuration({...duration,type:"month"})}>
+                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${duration.type == "month" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setDuration({ ...duration, type: "month" })}>
                                     <Text className="text-typography-800 text-sm">Month</Text>
                                 </Pressable>
                             </Box>
                             <Slider
                                 defaultValue={10}
                                 onChange={(value: number) => setDuration({
-...duration,value:value
+                                    ...duration, value: value
                                 })}
                                 size="lg"
                                 orientation="horizontal"
@@ -178,13 +178,15 @@ const Home = () => {
 
                         </Box>
                         <Button className="bg-orange rounded-full" onPress={() => {
-                            router.push("/space")
+                            router.push("/spacefinder")
                         }}>
                             <ButtonText>
                                 Find Space
                             </ButtonText>
                             <Icon as={Map} color="white" />
                         </Button>
+                        
+
 
                     </VStack>
 
