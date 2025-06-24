@@ -62,7 +62,18 @@ function RootLayoutNav() {
     <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Slot />
+          <Stack.Screen
+            name="home"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="space"
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </GluestackUIProvider>
