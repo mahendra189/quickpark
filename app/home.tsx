@@ -246,9 +246,10 @@ const Home = () => {
                                     router.push("/login");
                                     setShowDrawer(false);
                                 }}
-                                className="flex-1"
+                                className="flex-1 rounded-full bg-red-500 hover:bg-red-600"
                             >
                                 <ButtonText>Log Out</ButtonText>
+                                <Icon as={LogOut} color="white" />
                             </Button>
                         </DrawerFooter>
                     </DrawerContent>

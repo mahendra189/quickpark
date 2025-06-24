@@ -63,6 +63,24 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen
+            name="index"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="login"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="register"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name="home"
             options={{
               headerShown: false,
@@ -70,6 +88,12 @@ function RootLayoutNav() {
           />
           <Stack.Screen
             name="spacefinder"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="settings"
             options={{
               headerShown: false,
             }}
