@@ -168,6 +168,10 @@ module.exports = {
           info: "rgb(var(--color-indicator-info)/<alpha-value>)",
           error: "rgb(var(--color-indicator-error)/<alpha-value>)",
         },
+        white: "#FFFFFF",
+        orange: "#FF7F40",
+        slate: "#787F86",
+        raisin: "#1E1B22",
       },
       fontFamily: {
         heading: undefined,

@@ -7,23 +7,15 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Platform, Text } from "react-native"
 
-const Settings = () => {
+const Space = () => {
     const router = useRouter();
     return (
         <Box className=" flex flex-1 items-center justify-center">
-            <Input>
-                <InputSlot className="pl-3">
-                    <InputIcon as={SearchIcon} />
-                </InputSlot>
-                <InputField placeholder="Search..." />
-            </Input>
-            <Text className="text-xl font-bold">Settings Page</Text>
-            <Box className="my-[30px] h-1 w-[80%]" />
-            <Button size="md" variant="solid" action="primary" onPress={() => router.replace("/login")}>
-                <ButtonText>Logout</ButtonText>
-            </Button>
+
+            <Text className="text-xl font-bold">Space Page</Text>
+
             <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
         </Box>
     )
 }
-export default Settings;
+export default Space;
