@@ -28,21 +28,12 @@ import { Pressable } from "@/components/ui/pressable";
 import { Icon } from "@/components/ui/icon";
 import { ArrowLeft } from "lucide-react-native";
 import { useRouter } from "expo-router";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 
 const ProfilePage = () => {
   const router = useRouter();
   const [dob, setDob] = useState(new Date(2022, 11, 12)); // 12/12/2022
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const formatDate = (date: Date | string) => {
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
 
   return (
     <SafeAreaView className="flex-1 bg-background-0">
@@ -111,24 +102,12 @@ const ProfilePage = () => {
           </Input>
           <Text className="mb-3 ml-1">Date of birth</Text>
           <Pressable
-            onPress={() => setShowDatePicker(true)}
             className="rounded-full p-2 border border-typography-200 bg-white mb-5"
             style={{ height: 46, justifyContent: 'center', marginBottom: 20 }}
           >
-            <Text style={{ color: '#787F86' }}>{formatDate(dob)}</Text>
+            <Text style={{ color: '#787F86' }}></Text>
           </Pressable>
-          {showDatePicker && (
-            <DateTimePicker
-              value={dob}
-              mode="date"
-              display="default"
-              onChange={(event, selectedDate) => {
-                setShowDatePicker(false);
-                if (selectedDate) setDob(selectedDate);
-              }}
-              maximumDate={new Date()}
-            />
-          )}
+          
 
           <Button
             size="xl"
