@@ -8,53 +8,72 @@ import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { Pressable } from "@/components/ui/pressable";
 import { Image } from "react-native";
+import { Divider } from "@/components/ui/divider";
+import { Eye, EyeOff, EyeOffIcon } from "lucide-react-native";
+import { Icon } from "@/components/ui/icon";
+import { useState } from "react";
 
 const Login = () => {
-    const router = useRouter();
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   return (
-    <Box className=" flex flex-1 items-center justify-center bg-gray-190">
-      <Box className="absolute top-14 left-5 ">
-        <Heading className="text-5xl mb-2">Login</Heading>
+    <Box className=" flex flex-1 items-center justify-center bg-background-0 px-4 py-3">
+      <Box className="absolute top-20 left-5 ">
+        <Heading className="text-5xl mb-2">QuickPark</Heading>
         <Text className="text-[#787F86]">
-          By logging in you agree to our{" "}
-          <Text className="font-bold text-[#1E1B22]">Terms of Use</Text>
+          Welcome back! Please login to your account.
         </Text>
+
       </Box>
       <Input
         variant="outline"
-        size="md"
+        size="lg"
         isDisabled={false}
         isInvalid={false}
         isReadOnly={false}
-        style={{ width: 370, marginBottom: 20, marginTop: -120 }}
+        style={{ height: 46, marginBottom: 20, marginTop: -120 }}
+        className="rounded-full p-2"
       >
-        <InputField placeholder="Enter you Eamil address" />
+        <InputField placeholder="Enter your Email address" type="text" />
       </Input>
       <Input
         variant="outline"
-        size="md"
+        size="lg"
         isDisabled={false}
         isInvalid={false}
         isReadOnly={false}
-        style={{ width: 370, marginBottom: 20 }}
+        style={{ height: 46, marginBottom: 20 }}
+        className="rounded-full p-2"
       >
-        <InputField placeholder="Enter your password" />
+        <InputField placeholder="Enter your password" type={showPassword ? "text" : "password"} />
+        <Pressable className="mx-2 my-2" onPress={() => setShowPassword(!showPassword)}>
+          <Icon as={showPassword ? EyeOff : Eye} />
+
+        </Pressable>
       </Input>
       <Button
-        size="md"
+        size="xl"
         variant="solid"
         action="primary"
-        style={{ backgroundColor: "#FF7F40" }}
+        style={{ backgroundColor: "#FF7F40", borderRadius: 50, width: "100%",marginBottom: 20 }}
+        onPress={() => router.replace("/home")}
       >
         <ButtonText>Login</ButtonText>
       </Button>
-      <Text className="my-5">
-        --------------------------------------------or--------------------------------------------
-      </Text>
+      <Button
+        size="xl"
+        variant="solid"
+        action="primary"
+        style={{ backgroundColor: "white", borderRadius: 50, width: "100%",borderColor: "#FF7F40", borderWidth: 1, marginBottom: 20 }}
+        onPress={() => router.replace("/register")}
+      >
+        <ButtonText className="text-[#FF7F40]" >Not Registered? Sign Up</ButtonText>
+      </Button>
+      <Divider className="my-5" />
       <Pressable
         onPress={() => console.log("Hello")}
         className="p-5 w-1000 bg-white"
-        style={{ borderColor: 'solid-black', borderRadius: 8, width: 360}}
+        style={{ borderColor: 'solid-black', borderRadius: 50, width: '100%' }}
       >
         <View className="flex flex-row items-center">
           <Image
@@ -65,33 +84,16 @@ const Login = () => {
             style={{ width: 20, height: 20 }}
           />
           <Text className="text-typography-500 ">
-           Sign in with Google
+            Sign in with Google
           </Text>
         </View>
       </Pressable>
 
-      <Pressable
-        onPress={() => console.log("Hello")}
-        className="p-5 w-1000 bg-white m-5 "
-        style={{ borderColor: 'solid-black', borderRadius: 8,  width: 360, marginBottom:59}}
-      >
-        <View className="flex flex-row items-center">
-          <Image
-            className="mr-2"
-            source={{
-              uri: "https://img.icons8.com/?size=100&id=118497&format=png&color=000000",
-            }}
-            style={{ width: 20, height: 20 }}
-          />
-          <Text className="text-typography-500 ">
-            Sign in with Facebook
-          </Text>
-        </View>
-      </Pressable>
-       <Text className="text-[#787F86]" style={{ marginTop: -45, marginRight: 29}}>
-  For more information, please see our{" "}
-  <Text className="font-bold text-[#1E1B22]">Privacy Policy</Text>
-</Text>
+
+      <Text className="text-[#787F86]" style={{ marginRight: 20, marginTop: 20 }}>
+        For more information, please see our{" "}
+        <Text className="font-bold text-[#1E1B22]">Privacy Policy</Text>
+      </Text>
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </Box>
   );

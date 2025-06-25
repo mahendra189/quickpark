@@ -17,17 +17,18 @@ import { User, ShoppingCart, Wallet, LogOut, Settings, LineChart, Menu, Search, 
 import { HStack } from "@/components/ui/hstack";
 import { Image } from "@/components/ui/image";
 import { Slider, SliderFilledTrack, SliderThumb, SliderTrack } from "@/components/ui/slider";
-// import car image using require for React Native compatibility
-const car = require("../assets/images/vehicles/car.png");
 const Home = () => {
     const router = useRouter();
     const [showDrawer, setShowDrawer] = useState(false);
-    const [category, setCategory] = useState("car");
-    const [duration, setDuration] = useState({
-        type: "hour",
-        value: 1
+    const [vehicle, setVehicle] = useState({
+        type: "car",
+        count: 1,
+        duration: {
+            type: "hour",
+            value: 1
+        }
     });
-    const [vehicleCount, setVehicleCount] = useState(1);
+    
     return (
         <SafeAreaView className="flex-1 bg-background-100">
 
@@ -42,6 +43,7 @@ const Home = () => {
                                 source={{
                                     uri: "https://media.istockphoto.com/id/1477793885/vector/beautiful-pastel-colored-abstract-landscape-geometric-vector-illustration.jpg?s=612x612&w=0&k=20&c=-CuSPe8hfQTM3Zscl6Ebbq43XwvpqzKRZLZO7CJPzT8=",
                                 }}
+                                alt="User Avatar"
                             />
                         </Avatar>
                         <Box className="flex-1 ml-2">
@@ -98,24 +100,24 @@ const Home = () => {
 
                             <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} className="">
                                 <HStack space="sm">
-                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${category == "car" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setCategory("car")}>
-                                        <Image source={require("../assets/images/vehicles/car.png")} className="w-28 h-28" />
+                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.type == "car" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, type: "car" })}>
+                                        <Image source={require("../assets/images/vehicles/car.png")} className="w-28 h-28" alt="Car" />
                                         <Text className="text-typography-500 text-sm">Car</Text>
                                     </Pressable>
-                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${category == "bike" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setCategory("bike")}>
-                                        <Image source={require("../assets/images/vehicles/bike.png")} className="w-28 h-28" />
+                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.type == "bike" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, type: "bike" })}>
+                                        <Image source={require("../assets/images/vehicles/bike.png")} className="w-28 h-28" alt="Bike" />
                                         <Text className="text-typography-500 text-sm">Bike</Text>
                                     </Pressable>
-                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${category == "truck" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setCategory("truck")}>
-                                        <Image source={require("../assets/images/vehicles/truck.png")} className="w-28 h-28" />
+                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.type == "truck" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, type: "truck" })}>
+                                        <Image source={require("../assets/images/vehicles/truck.png")} className="w-28 h-28" alt="Truck" />
                                         <Text className="text-typography-500 text-sm">Truck</Text>
                                     </Pressable>
-                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${category == "van" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setCategory("van")}>
-                                        <Image source={require("../assets/images/vehicles/van.png")} className="w-28 h-28" />
+                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.type == "van" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, type: "van" })}>
+                                        <Image source={require("../assets/images/vehicles/van.png")} className="w-28 h-28" alt="Van" />
                                         <Text className="text-typography-500 text-sm">Van</Text>
                                     </Pressable>
-                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${category == "auto" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setCategory("auto")}>
-                                        <Image source={require("../assets/images/vehicles/auto.png")} className="w-28 h-28" />
+                                    <Pressable className={"w-36 h-36 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.type == "auto" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, type: "auto" })}>
+                                        <Image source={require("../assets/images/vehicles/auto.png")} className="w-28 h-28" alt="Auto" />
                                         <Text className="text-typography-500 text-sm">Auto</Text>
                                     </Pressable>
                                 </HStack>
@@ -127,19 +129,19 @@ const Home = () => {
                             {/* dropdown for duration selection */}
                             <Box className="flex-row gap-2" >
 
-                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicleCount == 1 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicleCount(1)}>
+                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.count == 1 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, count: 1 })}>
                                     <Text className="text-typography-800 text-sm">1</Text>
                                 </Pressable>
-                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicleCount == 2 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicleCount(2)}>
+                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.count == 2 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, count: 2 })}>
                                     <Text className="text-typography-800 text-sm">2</Text>
                                 </Pressable>
-                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicleCount == 3 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicleCount(3)}>
+                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.count == 3 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, count: 3 })}>
                                     <Text className="text-typography-800 text-sm">3</Text>
                                 </Pressable>
-                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicleCount == 4 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicleCount(4)}>
+                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.count == 4 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, count: 4 })}>
                                     <Text className="text-typography-800 text-sm">4</Text>
                                 </Pressable>
-                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicleCount == 5 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicleCount(5)}>
+                                <Pressable className={"p-2 px-4 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.count == 5 ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, count: 5 })}>
                                     <Text className="text-typography-800 text-sm">5</Text>
                                 </Pressable>
                             </Box>
@@ -149,17 +151,17 @@ const Home = () => {
                             {/* dropdown for duration selection */}
                             <Box className="flex-row gap-2" >
 
-                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${duration.type == "hour" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setDuration({ ...duration, type: "hour" })}>
+                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.duration.type == "hour" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, duration: { ...vehicle.duration, type: "hour" } })}>
                                     <Text className="text-typography-800 text-sm">Hour</Text>
                                 </Pressable>
-                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${duration.type == "month" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setDuration({ ...duration, type: "month" })}>
+                                <Pressable className={"p-2 bg-background-0  rounded-lg items-center justify-center " + `${vehicle.duration.type == "month" ? "border-2 border-orange" : "border border-typography-100"}`} onPress={() => setVehicle({ ...vehicle, duration: { ...vehicle.duration, type: "month" } })}>
                                     <Text className="text-typography-800 text-sm">Month</Text>
                                 </Pressable>
                             </Box>
                             <Slider
                                 defaultValue={10}
-                                onChange={(value: number) => setDuration({
-                                    ...duration, value: value
+                                onChange={(value: number) => setVehicle({
+                                    ...vehicle, duration: { ...vehicle.duration, value: value }
                                 })}
                                 size="lg"
                                 orientation="horizontal"
@@ -175,11 +177,12 @@ const Home = () => {
                                 </SliderTrack>
                                 <SliderThumb className="bg-orange" />
                             </Slider>
-                            <Text>{duration.value} {duration.type}</Text>
+                            <Text>{vehicle.duration.value} {vehicle.duration.type}</Text>
 
                         </Box>
                         <Button className="bg-orange rounded-full" onPress={() => {
                             router.push("/spacefinder")
+                            console.log("Vehicle Details: ", vehicle);
                         }}>
                             <ButtonText>
                                 Find Space
@@ -243,9 +246,10 @@ const Home = () => {
                                     router.push("/login");
                                     setShowDrawer(false);
                                 }}
-                                className="flex-1"
+                                className="flex-1 rounded-full bg-red-500 hover:bg-red-600"
                             >
                                 <ButtonText>Log Out</ButtonText>
+                                <Icon as={LogOut} color="white" />
                             </Button>
                         </DrawerFooter>
                     </DrawerContent>
