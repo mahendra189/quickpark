@@ -4,19 +4,52 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-import { Platform, Pressable, SafeAreaView, ScrollView, Text } from "react-native"
+import {
+  Platform,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  Text,
+} from "react-native";
 import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
 import { Icon, SearchIcon } from "@/components/ui/icon";
 import { VStack } from "@/components/ui/vstack";
-import { DrawerBackdrop, DrawerContent, DrawerHeader, DrawerBody, DrawerFooter, Drawer } from "@/components/ui/drawer";
+import {
+  DrawerBackdrop,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  Drawer,
+} from "@/components/ui/drawer";
 import { Heading } from "@/components/ui/heading";
 import { useState } from "react";
-import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallbackText,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import { Divider } from "@/components/ui/divider";
-import { User, ShoppingCart, Wallet, LogOut, Settings, LineChart, Menu, Search, Map } from "lucide-react-native"
+import {
+  User,
+  ShoppingCart,
+  Wallet,
+  LogOut,
+  Settings,
+  LineChart,
+  Menu,
+  Search,
+  Map,
+} from "lucide-react-native";
 import { HStack } from "@/components/ui/hstack";
 import { Image } from "@/components/ui/image";
-import { Slider, SliderFilledTrack, SliderThumb, SliderTrack } from "@/components/ui/slider";
+import {
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+} from "@/components/ui/slider";
 const Home = () => {
     const router = useRouter();
     const [showDrawer, setShowDrawer] = useState(false);
@@ -75,7 +108,7 @@ const Home = () => {
                         </Box>
 
 
-                        {/* <Box className="w-full flex-col items-start justify-between mt-4 gap-1">
+            {/* <Box className="w-full flex-col items-start justify-between mt-4 gap-1">
                             <Text>
                                 <Text className="text-xs text-typography-600">Your Favourite Spots</Text>
                             </Text>
@@ -230,7 +263,10 @@ const Home = () => {
                         </DrawerHeader>
                         <Divider className="my-2" />
                         <DrawerBody contentContainerClassName="gap-2" >
-                            <Pressable className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md">
+                            <Pressable className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"onPress={() => {
+                                router.push("/profilePage")
+                                setShowDrawer(false)
+                            }}> 
                                 <Icon as={User} size="lg" className="text-typography-600" />
                                 <Text>My Profile</Text>
                             </Pressable>
