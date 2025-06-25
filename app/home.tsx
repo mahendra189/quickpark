@@ -56,10 +56,10 @@ const Home = () => {
                             }}
                             variant="outline"
                             action="primary"
-                            className="z-50 rounded-full py-2 px-2 border-[1px] border-typography-700 color-typography-0 hover:bg-primary-500 hover:color-typography-0"
+                            className="z-50 rounded-full px-3 py-3  border-[1px] border-typography-700 color-typography-0 hover:bg-primary-500 hover:color-typography-0"
 
                         >
-                            <Icon as={Menu} color="white" />
+                            <Icon as={Menu} color="white" size="xl" />
                         </Button>
 
 
@@ -226,7 +226,10 @@ const Home = () => {
                                 <Icon as={User} size="lg" className="text-typography-600" />
                                 <Text>My Profile</Text>
                             </Pressable>
-                            <Pressable className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md">
+                            <Pressable className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md" onPress={() => {
+                                router.push("/history")
+                                setShowDrawer(false)
+                            }}>
                                 <Icon as={Wallet} size="lg" className="text-typography-600" />
                                 <Text>History</Text>
                             </Pressable>

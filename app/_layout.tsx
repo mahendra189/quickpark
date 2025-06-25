@@ -98,6 +98,12 @@ function RootLayoutNav() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="history"
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </GluestackUIProvider>
