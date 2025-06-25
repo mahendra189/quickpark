@@ -30,9 +30,10 @@ const Home = () => {
     });
     
     return (
-        <SafeAreaView className="flex-1 bg-background-100">
+        <SafeAreaView className="flex-1 bg-background">
 
-            <StatusBar style={Platform.OS === "ios" ? "dark" : "auto"} backgroundColor="#1E1B22" />
+            {/* <StatusBar backgroundColor="red" barStyle="dark-content" /> */}
+            <StatusBar style="dark" backgroundColor="#1E1B22" />
             <Box className="justify-center flex-1">
                 <Box className="flex-col items-center justify-start px-4 pt-2 bg-raisin border-b border-typography-100">
 
