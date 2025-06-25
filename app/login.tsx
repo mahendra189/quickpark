@@ -12,13 +12,14 @@ import { Divider } from "@/components/ui/divider";
 import { Eye, EyeOff, EyeOffIcon } from "lucide-react-native";
 import { Icon } from "@/components/ui/icon";
 import { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Login = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   return (
     <Box className=" flex flex-1 items-center justify-center bg-background-0 px-4 py-3">
-      <Box className="absolute top-20 left-5 ">
+      <Box className=" mb-10">
         <Heading className="text-5xl mb-2">QuickPark</Heading>
         <Text className="text-[#787F86]">
           Welcome back! Please login to your account.
@@ -31,7 +32,7 @@ const Login = () => {
         isDisabled={false}
         isInvalid={false}
         isReadOnly={false}
-        style={{ height: 46, marginBottom: 20, marginTop: -120 }}
+        style={{ height: 46, marginBottom: 20 }}
         className="rounded-full p-2"
       >
         <InputField placeholder="Enter your Email address" type="text" />
@@ -72,8 +73,8 @@ const Login = () => {
       <Divider className="my-5" />
       <Pressable
         onPress={() => console.log("Hello")}
-        className="p-5 w-1000 bg-white"
-        style={{ borderColor: 'solid-black', borderRadius: 50, width: '100%' }}
+        className="p-5 w-1000 bg-white border-typography-200"
+        style={{ borderWidth:1, borderRadius: 50, width: '100%' }}
       >
         <View className="flex flex-row items-center">
           <Image
