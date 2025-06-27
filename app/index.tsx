@@ -1,30 +1,46 @@
 import { Heading } from "@/components/ui/heading";
+import { GlobalContext } from "@/context/globalContext";
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 
-export default function Home() {
+export default function Index() {
   const router = useRouter();
-  const [auth, setAuth] = useState<boolean | null>(null);
+  const context = useContext(GlobalContext);
+  const user = context?.user;
+
+  // useEffect(() => {
+  //   // Simulate auth check (replace this with actual logic)
+  //   setTimeout(() => {
+  //     setAuth(false); // or true
+  //   }, 500); // small delay to simulate async check
+  // }, []);
 
   useEffect(() => {
-    // Simulate auth check (replace this with actual logic)
-    setTimeout(() => {
-      setAuth(false); // or true
-    }, 500); // small delay to simulate async check
-  }, []);
+    console.log(user)
+    if (user === undefined) return;
+    const timeout = setTimeout(() => {
 
-  useEffect(() => {
-    if (auth === null) return; // auth not checked yet
-    router.replace(auth ? "/home" : "/login");
-  }, [auth]);
+      if (user === null) {
+        router.replace("/login")
+      } // auth not checked yet
+      else {
+        router.replace("/home");
+      }
+    },0);
+    return () => clearTimeout(timeout);
+  }, [user]);
 
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size="large" />
-      {/* add a splash screen */}
-      <Heading className="text-orange text-5xl" >QuickPark</Heading>
-      
-    </View>
-  );
+  if (user === undefined) {
+
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+        <Heading className="text-orange text-5xl" >QuickPark</Heading>
+
+      </View>
+    );
+  }
+
+  return null;
 }

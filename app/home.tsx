@@ -1,55 +1,52 @@
-import { View } from "@/components/Themed";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import {
-  Platform,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  Text,
+    Platform,
+    Pressable,
+    SafeAreaView,
+    ScrollView,
+    Text,
 } from "react-native";
-import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input";
-import { Icon, SearchIcon } from "@/components/ui/icon";
+import { Input, InputField} from "@/components/ui/input";
+import { Icon } from "@/components/ui/icon";
 import { VStack } from "@/components/ui/vstack";
 import {
-  DrawerBackdrop,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  DrawerFooter,
-  Drawer,
+    DrawerBackdrop,
+    DrawerContent,
+    DrawerHeader,
+    DrawerBody,
+    DrawerFooter,
+    Drawer,
 } from "@/components/ui/drawer";
 import { Heading } from "@/components/ui/heading";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
-  Avatar,
-  AvatarBadge,
-  AvatarFallbackText,
-  AvatarImage,
+    Avatar,
+    AvatarFallbackText,
+    AvatarImage,
 } from "@/components/ui/avatar";
 import { Divider } from "@/components/ui/divider";
 import {
-  User,
-  ShoppingCart,
-  Wallet,
-  LogOut,
-  Settings,
-  LineChart,
-  Menu,
-  Search,
-  Map,
+    User,
+    Wallet,
+    LogOut,
+    Settings,
+    Menu,
+    Search,
+    Map,
 } from "lucide-react-native";
 import { HStack } from "@/components/ui/hstack";
 import { Image } from "@/components/ui/image";
 import {
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
+    Slider,
+    SliderFilledTrack,
+    SliderThumb,
+    SliderTrack,
 } from "@/components/ui/slider";
+import { GlobalContext } from "@/context/globalContext";
 const Home = () => {
     const router = useRouter();
     const [showDrawer, setShowDrawer] = useState(false);
@@ -62,6 +59,9 @@ const Home = () => {
         }
     });
 
+    const context = useContext(GlobalContext)
+    const user = context?.user;
+    console.log(user)
     return (
         <SafeAreaView className="flex-1 bg-background-0">
 
@@ -71,7 +71,7 @@ const Home = () => {
 
                     <Box className="flex-row mt-4 items-center justify-between">
                         <Avatar size="md" className="mr-2">
-                            <AvatarFallbackText>Mahendra Suthar</AvatarFallbackText>
+                            <AvatarFallbackText>{user.email}</AvatarFallbackText>
                             <AvatarImage
                                 source={{
                                     uri: "https://media.istockphoto.com/id/1477793885/vector/beautiful-pastel-colored-abstract-landscape-geometric-vector-illustration.jpg?s=612x612&w=0&k=20&c=-CuSPe8hfQTM3Zscl6Ebbq43XwvpqzKRZLZO7CJPzT8=",
@@ -81,7 +81,7 @@ const Home = () => {
                         </Avatar>
                         <Box className="flex-1 ml-2">
                             <Text className="text-typography-600">Welcome</Text>
-                            <Text className="text-typography-100">Mahendrakumar</Text>
+                            <Text className="text-typography-100">{user.displayName || "User"}</Text>
                         </Box>
                         <Button
                             onPress={() => {
@@ -108,7 +108,7 @@ const Home = () => {
                         </Box>
 
 
-            {/* <Box className="w-full flex-col items-start justify-between mt-4 gap-1">
+                        {/* <Box className="w-full flex-col items-start justify-between mt-4 gap-1">
                             <Text>
                                 <Text className="text-xs text-typography-600">Your Favourite Spots</Text>
                             </Text>
@@ -257,16 +257,16 @@ const Home = () => {
                                 />
                             </Avatar>
                             <VStack space="xs" className="items-center mt-4">
-                                <Text className="text-typography-800">Mahendrakumar</Text>
-                                <Text className="text-typography-600">mahendrakumar@google.com</Text>
+                                <Text className="text-typography-800">{user.displayName || "user"}</Text>
+                                <Text className="text-typography-600">{user.email}</Text>
                             </VStack>
                         </DrawerHeader>
                         <Divider className="my-2" />
                         <DrawerBody contentContainerClassName="gap-2" >
-                            <Pressable className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"onPress={() => {
+                            <Pressable className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md" onPress={() => {
                                 router.push("/profilePage")
                                 setShowDrawer(false)
-                            }}> 
+                            }}>
                                 <Icon as={User} size="lg" className="text-typography-600" />
                                 <Text>My Profile</Text>
                             </Pressable>
