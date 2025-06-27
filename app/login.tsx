@@ -41,7 +41,7 @@ const Login = () => {
     setShowAlert(true)
     setTimeout(() => {
       setShowAlert(false)
-    }, 2000)
+    }, 3500)
 
 
   }
@@ -59,7 +59,7 @@ const Login = () => {
       router.replace("/home")
     }
     catch (err: any) {
-      handleAlert(err, "error", X)
+      handleAlert(err.toString(), "error", X)
     }
   }
 
