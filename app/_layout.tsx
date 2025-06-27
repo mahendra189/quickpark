@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useColorScheme } from "@/components/useColorScheme";
 import { Slot, Stack } from "expo-router";
+import { GlobalProvider } from "../context/globalContext";
 
 import "../global.css";
 
@@ -59,59 +60,61 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen
-            name="index"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="login"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="register"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="home"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="spacefinder"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="settings"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="history"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="profilePage"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </GluestackUIProvider>
+    <GlobalProvider>
+      <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen
+              name="index"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="login"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="register"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="home"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="spacefinder"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="settings"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="history"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="profilePage"
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </ThemeProvider>
+      </GluestackUIProvider>
+    </GlobalProvider>
   );
 }
