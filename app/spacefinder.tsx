@@ -22,6 +22,7 @@ import { HStack } from '@/components/ui/hstack';
 import { Heading } from '@/components/ui/heading';
 import * as Location from 'expo-location';
 const Space = () => {
+
   const router = useRouter();
   const [showActionsheet, setShowActionsheet] = React.useState(false)
   const [selectedSpace, setSelectedSpace] = useState(
