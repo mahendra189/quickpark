@@ -9,7 +9,7 @@ import { Input, InputField } from "@/components/ui/input";
 import { Pressable } from "@/components/ui/pressable";
 import { Image } from "react-native";
 import { Divider } from "@/components/ui/divider";
-import { Check, Cross, Eye, EyeOff, EyeOffIcon, InfoIcon } from "lucide-react-native";
+import { Check, Cross, Eye, EyeOff, EyeOffIcon, InfoIcon, X } from "lucide-react-native";
 import { Icon } from "@/components/ui/icon";
 import { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -47,6 +47,11 @@ const Login = () => {
   }
 
   const handleLogin = async () => {
+    if (!email && !password)
+    {
+      handleAlert("Enter Values!", "error", X)
+      return
+    }
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       setUser && setUser(userCredential.user);
@@ -54,7 +59,7 @@ const Login = () => {
       router.replace("/home")
     }
     catch (err: any) {
-      handleAlert(err, "error", Cross)
+      handleAlert(err, "error", X)
     }
   }
 
@@ -142,7 +147,7 @@ const Login = () => {
           <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
           {
             showAlert &&
-            <Alert className="absolute bottom-10 left-0 right-0" action={alert.type as "muted" | "success" | "error" | "warning" | "info"} variant="solid">
+            <Alert className="absolute bottom-1 left-0 right-0" action={alert.type as "muted" | "success" | "error" | "warning" | "info"} variant="solid">
               <AlertIcon as={alert.icon} />
               <AlertText>{alert.msge}</AlertText>
             </Alert>

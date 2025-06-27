@@ -9,6 +9,7 @@ interface GlobalState {
   theme?: string;
   setUser: (user: any) => void;
   setTheme: (theme: string) => void;
+  handleLogOut:Function
 }
 
 export const GlobalContext = createContext<GlobalState | undefined>(undefined);
@@ -17,6 +18,10 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [theme, setTheme] = useState<string>('light');
 
+  const handleLogOut = () => {
+    setUser(null)
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth,(firebaseUser) => {
       setUser(firebaseUser ?? null);
@@ -24,7 +29,7 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
     return () => unsubscribe();
   },[]);
   return (
-    <GlobalContext.Provider value={{ user, setUser, theme, setTheme }}>
+    <GlobalContext.Provider value={{ user, setUser, theme, setTheme,handleLogOut }}>
       {children}
     </GlobalContext.Provider>
   );
