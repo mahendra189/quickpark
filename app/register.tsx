@@ -10,15 +10,61 @@ import { Pressable } from "@/components/ui/pressable";
 import { Image } from "react-native";
 import { Divider } from "@/components/ui/divider";
 import { Icon } from "@/components/ui/icon";
-import { Eye, EyeOff } from "lucide-react-native";
+import { Check, Cross, Eye, EyeOff, InfoIcon } from "lucide-react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../auth/firebaseConfig";
+import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 const Register = () => {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
+    const [alert, setAlert] = useState({
+        msge: "AlertBox",
+        icon: InfoIcon,
+        type:"success"
+    })
+    const [showAlert, setShowAlert] = useState(false);
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [mobile, setMobile] = useState('');
+
+    const handleAlert = (msg: string,type:string, icon: any) => {
+        setAlert({
+            msge: msg,
+            icon: icon,
+            type
+
+        })
+        setShowAlert(true)
+        setTimeout(() => {
+            setShowAlert(false)
+        }, 2000)
+
+
+    }
+
+    const handleRegister = async () => {
+
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            handleAlert("User Registration Done. ","success", Check)
+            router.replace("/home")
+
+            console.log("Done")
+        }
+        catch (err: any) {
+            handleAlert(err,"error", Cross)
+            console.log("Error", err)
+        }
+    }
+
+
     return (
         <SafeAreaView className="flex-1 bg-background-0">
-            <StatusBar  style={"dark"} />
+            <StatusBar style={"dark"} />
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false} >
 
 
@@ -37,8 +83,11 @@ const Register = () => {
                         isReadOnly={false}
                         style={{ height: 46, marginBottom: 20 }}
                         className="rounded-full p-2"
+
                     >
-                        <InputField placeholder="Enter your name" />
+                        <InputField value={name} onChangeText={(value) => {
+                            setName(value)
+                        }} placeholder="Enter your name" />
                     </Input>
                     <Input
                         variant="outline"
@@ -49,7 +98,7 @@ const Register = () => {
                         style={{ height: 46, marginBottom: 20 }}
                         className="rounded-full p-2"
                     >
-                        <InputField placeholder="Enter your email address" />
+                        <InputField value={email} onChangeText={(value) => setEmail(value)} placeholder="Enter your email address" />
                     </Input>
                     <Input
                         variant="outline"
@@ -60,7 +109,7 @@ const Register = () => {
                         style={{ height: 46, marginBottom: 20 }}
                         className="rounded-full p-2"
                     >
-                        <InputField placeholder="Enter your Mobile Number" />
+                        <InputField value={mobile} onChangeText={(value) => setMobile(value)} placeholder="Enter your Mobile Number" />
                     </Input>
                     <Input
                         variant="outline"
@@ -71,7 +120,7 @@ const Register = () => {
                         style={{ height: 46, marginBottom: 20 }}
                         className="rounded-full p-2"
                     >
-                        <InputField placeholder="Enter your password" type={showPassword ? "text" : "password"} />
+                        <InputField value={password} onChangeText={(value) => setPassword(value)} placeholder="Enter your password" type={showPassword ? "text" : "password"} />
                         <Pressable className="mx-2 my-2" onPress={() => setShowPassword(!showPassword)}>
                             <Icon as={showPassword ? EyeOff : Eye} />
 
@@ -82,7 +131,7 @@ const Register = () => {
                         variant="solid"
                         action="primary"
                         style={{ backgroundColor: "#FF7F40", borderRadius: 50, width: "100%", marginBottom: 20 }}
-
+                        onPress={handleRegister}
                     >
                         <ButtonText>Register</ButtonText>
                     </Button>
@@ -124,6 +173,17 @@ const Register = () => {
                     <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
                 </Box>
             </ScrollView>
+            {
+                showAlert &&
+                <Alert
+                    className="absolute bottom-10 left-0 right-0"
+                    action={alert.type as "success" | "muted" | "error" | "warning" | "info" | undefined}
+                    variant="solid"
+                >
+                    <AlertIcon as={alert.icon} />
+                    <AlertText>{alert.msge}</AlertText>
+                </Alert>
+            }
 
         </SafeAreaView>
     );

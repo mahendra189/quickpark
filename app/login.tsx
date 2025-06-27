@@ -9,14 +9,53 @@ import { Input, InputField } from "@/components/ui/input";
 import { Pressable } from "@/components/ui/pressable";
 import { Image } from "react-native";
 import { Divider } from "@/components/ui/divider";
-import { Eye, EyeOff, EyeOffIcon } from "lucide-react-native";
+import { Check, Cross, Eye, EyeOff, EyeOffIcon, InfoIcon } from "lucide-react-native";
 import { Icon } from "@/components/ui/icon";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/auth/firebaseConfig";
+import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
 
 const Login = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [alert, setAlert] = useState({
+    msge: "AlertBox",
+    icon: InfoIcon,
+    type: 'success'
+  })
+  const [showAlert, setShowAlert] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleAlert = (msg: string, type: string, icon: any) => {
+    setAlert({
+      msge: msg,
+      icon: icon,
+      type
+    })
+    setShowAlert(true)
+    setTimeout(() => {
+      setShowAlert(false)
+    }, 2000)
+
+
+  }
+
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+      handleAlert("User Logged In", "success", Check)
+      router.replace("/home")
+      console.log("Done")
+    }
+    catch (err: any) {
+      handleAlert(err, "error", Cross)
+      console.log(err)
+    }
+  }
+
   return (
     <Box className=" flex flex-1 items-center justify-center bg-background-0 px-4 py-3">
       <Box className=" mb-10">
@@ -35,7 +74,7 @@ const Login = () => {
         style={{ height: 46, marginBottom: 20 }}
         className="rounded-full p-2"
       >
-        <InputField placeholder="Enter your Email address" type="text" />
+        <InputField value={email} onChangeText={(value) => setEmail(value)} placeholder="Enter your Email address" type="text" />
       </Input>
       <Input
         variant="outline"
@@ -46,7 +85,7 @@ const Login = () => {
         style={{ height: 46, marginBottom: 20 }}
         className="rounded-full p-2"
       >
-        <InputField placeholder="Enter your password" type={showPassword ? "text" : "password"} />
+        <InputField value={password} onChangeText={(value) => setPassword(value)} placeholder="Enter your password" type={showPassword ? "text" : "password"} />
         <Pressable className="mx-2 my-2" onPress={() => setShowPassword(!showPassword)}>
           <Icon as={showPassword ? EyeOff : Eye} />
 
@@ -56,8 +95,10 @@ const Login = () => {
         size="xl"
         variant="solid"
         action="primary"
-        style={{ backgroundColor: "#FF7F40", borderRadius: 50, width: "100%",marginBottom: 20 }}
-        onPress={() => router.replace("/home")}
+        style={{ backgroundColor: "#FF7F40", borderRadius: 50, width: "100%", marginBottom: 20 }}
+        onPress={() => {
+          router.replace("/home")
+        }}
       >
         <ButtonText>Login</ButtonText>
       </Button>
@@ -65,7 +106,7 @@ const Login = () => {
         size="xl"
         variant="solid"
         action="primary"
-        style={{ backgroundColor: "white", borderRadius: 50, width: "100%",borderColor: "#FF7F40", borderWidth: 1, marginBottom: 20 }}
+        style={{ backgroundColor: "white", borderRadius: 50, width: "100%", borderColor: "#FF7F40", borderWidth: 1, marginBottom: 20 }}
         onPress={() => router.replace("/register")}
       >
         <ButtonText className="text-[#FF7F40]" >Not Registered? Sign Up</ButtonText>
@@ -74,7 +115,7 @@ const Login = () => {
       <Pressable
         onPress={() => console.log("Hello")}
         className="p-5 w-1000 bg-white border-typography-200"
-        style={{ borderWidth:1, borderRadius: 50, width: '100%' }}
+        style={{ borderWidth: 1, borderRadius: 50, width: '100%' }}
       >
         <View className="flex flex-row items-center">
           <Image
@@ -96,6 +137,14 @@ const Login = () => {
         <Text className="font-bold text-[#1E1B22]">Privacy Policy</Text>
       </Text>
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      {
+        showAlert &&
+        <Alert className="absolute bottom-10 left-0 right-0" action={alert.type as "muted" | "success" | "error" | "warning" | "info"} variant="solid">
+          <AlertIcon as={alert.icon} />
+          <AlertText>{alert.msge}</AlertText>
+        </Alert>
+      }
+
     </Box>
   );
 };
