@@ -10,9 +10,9 @@ import { Pressable } from "@/components/ui/pressable";
 import { Image } from "react-native";
 import { Divider } from "@/components/ui/divider";
 import { Icon } from "@/components/ui/icon";
-import { Check, Cross, Eye, EyeOff, InfoIcon } from "lucide-react-native";
+import { Check, X, Eye, EyeOff, InfoIcon } from "lucide-react-native";
 import { useContext, useState } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../auth/firebaseConfig";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
@@ -43,7 +43,7 @@ const Register = () => {
         setShowAlert(true)
         setTimeout(() => {
             setShowAlert(false)
-        }, 2000)
+        }, 3500)
 
 
     }
@@ -63,7 +63,7 @@ const Register = () => {
 
         }
         catch (err: any) {
-            handleAlert(err, "error", Cross)
+            handleAlert(err.toString(), "error", X)
             console.log("Error", err)
         }
     }
@@ -173,17 +173,16 @@ const Register = () => {
                     </Pressable>
 
 
-                    <Text className="text-[#787F86]" style={{ marginTop: 5, marginRight: 29 }}>
+                    <Text className="text-[#787F86]" style={{ marginTop: 5 }}>
                         For more information, please see our{" "}
                         <Text className="font-bold text-[#1E1B22]">Privacy Policy</Text>
                     </Text>
                     <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
                 </Box>
-            </ScrollView>
             {
                 showAlert &&
                 <Alert
-                    className="absolute bottom-10 left-0 right-0"
+                    className="bottom-10 left-0 right-0"
                     action={alert.type as "success" | "muted" | "error" | "warning" | "info" | undefined}
                     variant="solid"
                 >
@@ -191,6 +190,7 @@ const Register = () => {
                     <AlertText>{alert.msge}</AlertText>
                 </Alert>
             }
+            </ScrollView>
 
         </SafeAreaView>
     );

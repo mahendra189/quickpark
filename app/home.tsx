@@ -6,10 +6,10 @@ import { StatusBar } from "expo-status-bar";
 import {
   Platform,
   Pressable,
-  SafeAreaView,
   ScrollView,
   Text,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input, InputField } from "@/components/ui/input";
 import { AddIcon, Icon } from "@/components/ui/icon";
 import { VStack } from "@/components/ui/vstack";
@@ -869,64 +869,66 @@ const Home = () => {
         >
           <DrawerBackdrop />
           <DrawerContent>
-            <DrawerHeader className="flex-col items-center justify-center gap-2">
-              <Avatar size="2xl">
-                <AvatarFallbackText>User Image</AvatarFallbackText>
-                <AvatarImage
-                  source={{
-                    uri: "https://thumbs.dreamstime.com/b/anime-nature-tree-river-aesthetic-cartoon-illustration-ai-generated-beautiful-vibe-363870502.jpg",
+            <SafeAreaView>
+              <DrawerHeader className="flex-col items-center justify-center gap-2">
+                <Avatar size="2xl">
+                  <AvatarFallbackText>User Image</AvatarFallbackText>
+                  <AvatarImage
+                    source={{
+                      uri: "https://thumbs.dreamstime.com/b/anime-nature-tree-river-aesthetic-cartoon-illustration-ai-generated-beautiful-vibe-363870502.jpg",
+                    }}
+                  />
+                </Avatar>
+                <VStack space="xs" className="items-center mt-4">
+                  <Text className="text-typography-800">
+                    {user.displayName || "user"}
+                  </Text>
+                  <Text className="text-typography-600">{user.email}</Text>
+                </VStack>
+              </DrawerHeader>
+              <Divider className="my-2" />
+              <DrawerBody contentContainerClassName="gap-2">
+                <Pressable
+                  className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"
+                  onPress={() => {
+                    router.push("/profilePage");
+                    setShowDrawer(false);
                   }}
-                />
-              </Avatar>
-              <VStack space="xs" className="items-center mt-4">
-                <Text className="text-typography-800">
-                  {user.displayName || "user"}
-                </Text>
-                <Text className="text-typography-600">{user.email}</Text>
-              </VStack>
-            </DrawerHeader>
-            <Divider className="my-2" />
-            <DrawerBody contentContainerClassName="gap-2">
-              <Pressable
-                className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"
-                onPress={() => {
-                  router.push("/profilePage");
-                  setShowDrawer(false);
-                }}
-              >
-                <Icon as={User} size="lg" className="text-typography-600" />
-                <Text>My Profile</Text>
-              </Pressable>
-              <Pressable
-                className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"
-                onPress={() => {
-                  router.push("/history");
-                  setShowDrawer(false);
-                }}
-              >
-                <Icon as={Wallet} size="lg" className="text-typography-600" />
-                <Text>History</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => {
-                  router.push("/settings");
-                  setShowDrawer(false);
-                }}
-                className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"
-              >
-                <Icon as={Settings} size="lg" className="text-typography-600" />
-                <Text>Settings</Text>
-              </Pressable>
-            </DrawerBody>
-            <DrawerFooter>
-              <Button
-                onPress={handleLogOut}
-                className="flex-1 rounded-full bg-red-500 hover:bg-red-600"
-              >
-                <ButtonText>Log Out</ButtonText>
-                <Icon as={LogOut} color="white" />
-              </Button>
-            </DrawerFooter>
+                >
+                  <Icon as={User} size="lg" className="text-typography-600" />
+                  <Text>My Profile</Text>
+                </Pressable>
+                <Pressable
+                  className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"
+                  onPress={() => {
+                    router.push("/history");
+                    setShowDrawer(false);
+                  }}
+                >
+                  <Icon as={Wallet} size="lg" className="text-typography-600" />
+                  <Text>History</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    router.push("/settings");
+                    setShowDrawer(false);
+                  }}
+                  className="gap-3 flex-row items-center hover:bg-background-50 p-2 rounded-md"
+                >
+                  <Icon as={Settings} size="lg" className="text-typography-600" />
+                  <Text>Settings</Text>
+                </Pressable>
+              </DrawerBody>
+              <DrawerFooter>
+                <Button
+                  onPress={handleLogOut}
+                  className="flex-1 rounded-full bg-red-500 hover:bg-red-600"
+                >
+                  <ButtonText>Log Out</ButtonText>
+                  <Icon as={LogOut} color="white" />
+                </Button>
+              </DrawerFooter>
+            </SafeAreaView>
           </DrawerContent>
         </Drawer>
       </Box>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { Pressable, SafeAreaView, ScrollView, StyleSheet, View, Image, Platform } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, Image, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box } from '@/components/ui/box';
 import { Text } from '@/components/ui/text';
 import {

@@ -9,7 +9,8 @@ import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar"
 import { ArrowLeft, ArrowRight, Star, StarHalf, StarIcon } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Pressable, SafeAreaView, ScrollView } from "react-native"
+import { Pressable, ScrollView } from "react-native"
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Platform } from "react-native"
 const data = [
     {

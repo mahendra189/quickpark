@@ -7,7 +7,8 @@ import { Switch } from "@/components/ui/switch";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { ArrowLeft, Heading } from "lucide-react-native";
-import { Platform, Pressable, SafeAreaView, Text } from "react-native"
+import { Platform, Pressable, Text } from "react-native"
+import { SafeAreaView } from 'react-native-safe-area-context';
 import colors from "tailwindcss/colors"
 const Settings = () => {
     const router = useRouter();
