@@ -8,10 +8,13 @@ import { VStack } from "@/components/ui/vstack";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar"
 import { ArrowLeft, ArrowRight, Star, StarHalf, StarIcon } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Pressable, ScrollView } from "react-native"
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Platform } from "react-native"
+import { P } from "@expo/html-elements";
+import { GlobalContext } from "@/context/globalContext";
+
 const data = [
     {
         id: 1,
@@ -135,10 +138,13 @@ const data = [
         rating: 4.3,
         image: 'https://images.unsplash.com/photo-1611600749571-cdfbb502ec43'
     }]
+
 const History = () => {
     const router = useRouter();
     const [historyData, setHistoryData] = useState(data);
     const [filter, setFilter] = useState('all');
+    const context  = useContext(GlobalContext)
+    const user = context?.user
 
     useEffect(() => {
         if (filter === 'all') {
@@ -149,6 +155,30 @@ const History = () => {
         }
 
     }, [filter]);
+
+
+    const getHistory = async () => {
+        if (user && user.id) {
+
+            try {
+                const response = await fetch(`http://localhost:3000/history-user?id=${user.id}`)
+                const data = await response.json()
+                if (data.length === 0)
+                {
+                    setHistoryData([])
+                    console.log("No History ")
+                }
+                else {
+                    setHistoryData(data)
+                    console.log("History Found")
+                }
+            }
+            catch (err) 
+            {
+                console.log(err)
+            }
+        }
+    }
     return (
         <SafeAreaView className="flex-1 bg-background-0">
             <StatusBar style={Platform.OS === "ios" ? "dark" : "auto"} backgroundColor="#1E1B22" />

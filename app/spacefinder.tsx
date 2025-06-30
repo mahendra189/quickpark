@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { Pressable, ScrollView, StyleSheet, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,7 +16,7 @@ import {
 import { Button, ButtonText } from '@/components/ui/button';
 import { StatusBar } from 'expo-status-bar';
 import { Icon } from '@/components/ui/icon';
-import { ArrowLeft, ArrowRight, Backpack, CheckCircle, LocateFixed, LocateFixedIcon, LocationEdit, Search, Star, StarHalf } from 'lucide-react-native';
+import { ArrowLeft, ArrowRight, Backpack, CheckCircle, LocateFixed, LocateFixedIcon, LocationEdit, Search, Star, StarHalf, X } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { Input, InputField } from '@/components/ui/input';
 import { HStack } from '@/components/ui/hstack';
@@ -24,6 +24,7 @@ import { Heading } from '@/components/ui/heading';
 import * as Location from 'expo-location';
 import { Image } from '@/components/ui/image';
 import { useLocalSearchParams } from 'expo-router';
+import { GlobalContext } from '@/context/globalContext';
 const durationOptions = ["Hour", "Day", "Month"];
 const vehicleOptions = ["car", "bike", "truck", "van", "auto"];
 const vehicleImages: { [key: number]: any } = {
@@ -53,6 +54,9 @@ const Space = () => {
     type: "success",
     message: "Space created successfully",
   });
+
+  const context = useContext(GlobalContext)
+  const user = context?.user
 
   const router = useRouter();
   const [showActionsheet, setShowActionsheet] = React.useState(false)
@@ -174,16 +178,56 @@ const Space = () => {
 
 
 
-  const handlePark = (id: number) => {
-    setShowActionsheet(false)
-    setAlert({
-      show: true,
-      icon: CheckCircle,
-      type: "success",
-      message: "Parking Booked"
-    })
-    setAvailableSpaces(availableSpaces.filter((sp) => sp.id != id))
-    setTimeout(() => setAlert({ ...alert, show: false }), 3000)
+  const handlePark = async (id: number) => {
+    if (user && user.id) {
+      try {
+        const response = await fetch("http://localhost:3000/add-history", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id: user.id,
+            date: new Date().toLocaleDateString(),
+            space_id: id
+          })
+        })
+        setShowActionsheet(false)
+        setAlert({
+          show: true,
+          icon: CheckCircle,
+          type: "success",
+          message: "Parking Booked"
+        })
+        setTimeout(() => setAlert({ ...alert, show: false }), 3000)
+        setAvailableSpaces(availableSpaces.filter((sp) => sp.id != id))
+        
+      }
+      catch (err) {
+        console.log("Done History Added")
+        setShowActionsheet(false)
+        setAlert({
+          show: true,
+          icon: X,
+          type: "error",
+          message: "Error"
+        })
+        setTimeout(() => setAlert({ ...alert, show: false }), 3000)
+      }
+    }
+    else {
+      console.log("User not logged in !!!")
+      setShowActionsheet(false)
+      setAlert({
+        show: true,
+        icon: X,
+        type: "error",
+        message: "Error"
+      })
+      setTimeout(() => setAlert({ ...alert, show: false }), 3000)
+    }
+
+
   }
 
 
