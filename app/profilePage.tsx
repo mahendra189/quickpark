@@ -9,47 +9,79 @@ import { Center } from "@/components/ui/center";
 import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
 import { StatusBar } from "expo-status-bar";
-import { Platform } from "react-native";
+import { ActivityIndicator, Platform } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input, InputField } from "@/components/ui/input";
 import { Pressable } from "@/components/ui/pressable";
 import { Icon } from "@/components/ui/icon";
-import { ArrowLeft } from "lucide-react-native";
+import { ArrowLeft, CheckCircle } from "lucide-react-native";
 import { useRouter } from "expo-router";
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { updateEmail, updateProfile } from "firebase/auth";
 import { GlobalContext } from "@/context/globalContext";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
+import { P } from "@expo/html-elements";
 
 const ProfilePage = () => {
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter();
   const context = useContext(GlobalContext);
   const user = context?.user;
+  const setUser = context?.setUser
   const [email, setEmail] = useState<string>(user.email || "");
-  const [name, setName] = useState<string>(user.displayName || "");
-  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [name, setName] = useState<string>(user.name || "");
+  const [mobile, setMobile] = useState<string>(user.mobile || "");
+
   const [alert, setAlert] = useState({
-    msge: "AlertBox",
-    icon: AlertIcon,
-    type: 'success'
+    show: false,
+    icon: CheckCircle,
+    type: "success",
+    message: "Space created successfully",
   });
 
   const handleUpdate = async () => {
-    if (email !== user.email || name !== user.displayName) {
-      await updateEmail(user, email);
-      await updateProfile(user, {
-        displayName: name,
+    console.log(user)
+    if (email !== user.email || name !== user.name) {
+      setLoading(true)
+      // await updateEmail(user, email);
+      // await updateProfile(user, {
+      //   displayName: name,
+      // })
+      await fetch("http://localhost:3000/update-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: user.id,
+          name: name,
+          email: email,
+          mobile: mobile
+        })
+      }).then((res) => res.json()).then((data) => {
+        setLoading(false)
+        setUser && setUser(data[0])
+        console.log(data)
+
+      }
+
+      ).catch((err) => {
+
+        console.log("Error updating profile: ", err)
+
+
       })
-      setAlert({
-        msge: "Profile Updated Successfully",
-        icon: AlertIcon,
-        type: 'success'
-      });
-      setShowAlert(true);
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 2000);
-    } 
+      setLoading(false)
+    }
+    setAlert({
+      message: "Profile Updated Successfully",
+      icon: CheckCircle,
+      type: 'success',
+      show: true
+    });
+    setTimeout(() => {
+      setAlert({ ...alert, show: false })
+    }, 2000)
   }
   return (
     <SafeAreaView className="flex-1 bg-background-0">
@@ -70,7 +102,7 @@ const ProfilePage = () => {
         <Box className="w-12 h-12" />
       </Box>
       <Center>
-        <Avatar size="xl" className="mt-4">
+        {/* <Avatar size="xl" className="mt-4">
           <AvatarFallbackText></AvatarFallbackText>
           <AvatarImage
             source={{
@@ -78,7 +110,7 @@ const ProfilePage = () => {
             }}
           />
           <AvatarBadge />
-        </Avatar>
+        </Avatar> */}
         <Box className="mt-3 w-full max-w-md px-4">
           <Text className="mb-3 ml-1">Name</Text>
           <Input
@@ -108,7 +140,7 @@ const ProfilePage = () => {
               setEmail(value)
             }} placeholder="Enter your email address" />
           </Input>
-          {/* <Text className="mb-3 ml-1">Mobile No.</Text>
+          <Text className="mb-3 ml-1">Mobile No.</Text>
           <Input
             variant="outline"
             size="lg"
@@ -118,8 +150,8 @@ const ProfilePage = () => {
             style={{ height: 46, marginBottom: 20 }}
             className="rounded-full p-2"
           >
-            <InputField placeholder="Enter your mobile number" value="7387341368" />
-          </Input> */}
+            <InputField onChangeText={(value) => setMobile(value)} placeholder="Enter your mobile number" value={mobile} />
+          </Input>
           {/* <Text className="mb-3 ml-1">Date of birth</Text> */}
           {/* <Pressable
             className="rounded-full p-2 border border-typography-200 bg-white mb-5"
@@ -134,18 +166,40 @@ const ProfilePage = () => {
             variant="solid"
             action="primary"
             style={{ backgroundColor: "#FF7F40", borderRadius: 50, width: "100%", marginTop: 20 }}
-            onPress={handleUpdate}
+            onPress={async () => {
+              setLoading(true)
+              await handleUpdate()
+              setLoading(false)
+            }}
+            android_ripple={{ color: '#ffb184', borderless: false }}
           >
-            <ButtonText>Save</ButtonText>
+            {loading ?
+              <ActivityIndicator size="small" color="white" /> :
+              <ButtonText>Save</ButtonText>}
           </Button>
         </Box>
       </Center>
       {
-        showAlert &&
-        <Alert className="absolute bottom-1 left-0 right-0" action={alert.type as "muted" | "success" | "error" | "warning" | "info"} variant="solid">
-          <AlertIcon as={alert.icon} />
-          <AlertText>{alert.msge}</AlertText>
-        </Alert>
+        alert.show &&
+        <Box className="absolute bottom-10 w-full px-2 py-3">
+
+          <Box className="border-2 border-red-500 w-full flex bg-red-400 px-3 py-4 rounded-lg flex-row gap-2 items-center shadow-md"
+            style={{
+              backgroundColor: alert.type === "success" ? "#86efac" : "#f87171",
+              borderColor: alert.type === "success" ? "#4ade80" : "#ef4444",
+              borderWidth: 2
+            }}
+          >
+            <Icon as={alert.icon} color={alert.type === "success" ? "green" : "darkred"} size="md" />
+            <Text className="text-red-900 text-lg font-bold"
+              style={{ color: alert.type === "success" ? "#064e3b" : "#7f1d1d" }}
+
+            >
+              {alert.message}
+            </Text>
+
+          </Box>
+        </Box>
       }
     </SafeAreaView>
   );

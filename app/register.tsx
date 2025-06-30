@@ -3,14 +3,14 @@ import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Platform, ScrollView, Text } from "react-native";
+import { ActivityIndicator, Platform, ScrollView, Text } from "react-native";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { Pressable } from "@/components/ui/pressable";
 import { Image } from "react-native";
 import { Divider } from "@/components/ui/divider";
 import { Icon } from "@/components/ui/icon";
-import { Check, X, Eye, EyeOff, InfoIcon } from "lucide-react-native";
+import { Check, X, Eye, EyeOff, InfoIcon, CheckCircle } from "lucide-react-native";
 import { useContext, useState } from "react";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -20,51 +20,75 @@ import { GlobalContext } from "@/context/globalContext";
 const Register = () => {
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [alert, setAlert] = useState({
-        msge: "AlertBox",
-        icon: InfoIcon,
-        type: "success"
-    })
-    const [showAlert, setShowAlert] = useState(false);
+        show: false,
+        icon: CheckCircle,
+        type: "success",
+        message: "Space created successfully",
+    });
+
     const context = useContext(GlobalContext);
     const setUser = context?.setUser;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    // const [mobile, setMobile] = useState('');
+    const [mobile, setMobile] = useState('');
 
     const handleAlert = (msg: string, type: string, icon: any) => {
         setAlert({
-            msge: msg,
+            message: msg,
             icon: icon,
-            type
+            type,
+            show: true
 
         })
-        setShowAlert(true)
         setTimeout(() => {
-            setShowAlert(false)
+            setAlert({ ...alert, show: false })
         }, 3500)
 
 
     }
 
     const handleRegister = async () => {
+        if (name && email && mobile && password) {
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            setUser && setUser(userCredential.user);
-            await updateProfile(userCredential.user, {
 
-                "displayName": name
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // setUser && setUser(userCredential.user);
+                await updateProfile(userCredential.user, {
 
-            });
-            handleAlert("User Registration Done. ", "success", Check)
-            router.replace("/home")
+                    "displayName": name
 
+                });
+                await fetch('http://localhost:3000/create-user', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        mobile: mobile
+                    })
+                }).then((res) => res.json()).then((data) => {
+                    console.log("User Created Successfully!", data)
+                    setUser && setUser(data[0])
+                })
+                handleAlert("User Registration Done. ", "success", Check)
+                router.replace("/home")
+
+            }
+            catch (err: any) {
+                handleAlert(err.toString(), "error", X)
+                console.log("Error", err)
+            }
         }
-        catch (err: any) {
-            handleAlert(err.toString(), "error", X)
-            console.log("Error", err)
+        else {
+            setLoading(false)
+            handleAlert("Enter all Fields", "error", X)
+
         }
     }
 
@@ -107,7 +131,7 @@ const Register = () => {
                     >
                         <InputField value={email} onChangeText={(value) => setEmail(value)} placeholder="Enter your email address" />
                     </Input>
-                    {/* <Input
+                    <Input
                         variant="outline"
                         size="lg"
                         isDisabled={false}
@@ -117,7 +141,7 @@ const Register = () => {
                         className="rounded-full p-2"
                     >
                         <InputField value={mobile} onChangeText={(value) => setMobile(value)} placeholder="Enter your Mobile Number" />
-                    </Input> */}
+                    </Input>
                     <Input
                         variant="outline"
                         size="lg"
@@ -140,7 +164,9 @@ const Register = () => {
                         style={{ backgroundColor: "#FF7F40", borderRadius: 50, width: "100%", marginBottom: 20 }}
                         onPress={handleRegister}
                     >
-                        <ButtonText>Register</ButtonText>
+                        {loading ?
+                            <ActivityIndicator size="small" color="white" /> :
+                            <ButtonText>Register</ButtonText>}
                     </Button>
                     <Button
                         size="xl"
@@ -179,18 +205,29 @@ const Register = () => {
                     </Text>
                     <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
                 </Box>
-            {
-                showAlert &&
-                <Alert
-                    className="bottom-10 left-0 right-0"
-                    action={alert.type as "success" | "muted" | "error" | "warning" | "info" | undefined}
-                    variant="solid"
-                >
-                    <AlertIcon as={alert.icon} />
-                    <AlertText>{alert.msge}</AlertText>
-                </Alert>
-            }
             </ScrollView>
+            {
+                alert.show &&
+                <Box className="absolute bottom-10 w-full px-2 py-3">
+
+                    <Box className="border-2 border-red-500 w-full flex bg-red-400 px-3 py-4 rounded-lg flex-row gap-2 items-center shadow-md"
+                        style={{
+                            backgroundColor: alert.type === "success" ? "#86efac" : "#f87171",
+                            borderColor: alert.type === "success" ? "#4ade80" : "#ef4444",
+                            borderWidth: 2
+                        }}
+                    >
+                        <Icon as={alert.icon} color={alert.type === "success" ? "green" : "darkred"} size="md" />
+                        <Text className="text-red-900 text-lg font-bold"
+                            style={{ color: alert.type === "success" ? "#064e3b" : "#7f1d1d" }}
+
+                        >
+                            {alert.message}
+                        </Text>
+
+                    </Box>
+                </Box>
+            }
 
         </SafeAreaView>
     );

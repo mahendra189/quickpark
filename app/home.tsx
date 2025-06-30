@@ -85,6 +85,7 @@ const Home = () => {
 
   const context = useContext(GlobalContext);
   const user = context?.user;
+  console.log("user:",user)
   const logOut = context?.handleLogOut;
   const [filter, setFilter] = useState("find");
   const [coords, setCoords] = useState<{ latitude: number, longitude: number } | null>(null);
@@ -143,7 +144,13 @@ const Home = () => {
     getCurrentLocation();
   }, []);
 
-  //   car:500 -> 0,
+  useEffect(() => {
+    if (user == null) {
+      router.replace('/login')
+    }
+  },[user])
+
+  //   car:500 -> 0,j
   //   bike:200 -> 1,
   //   truck:1000 -> 2,
   //   van:800 -> 3,
@@ -234,7 +241,7 @@ const Home = () => {
             <Box className="flex-1 ml-2">
               <Text className="text-typography-600">Welcome</Text>
               <Text className="text-typography-100">
-                {user?.displayName || "User"}
+                {user && user.name}
               </Text>
             </Box>
             <Button
@@ -778,7 +785,7 @@ const Home = () => {
                 </Avatar>
                 <VStack space="xs" className="items-center mt-4">
                   <Text className="text-typography-800">
-                    {user?.displayName || "user"}
+                    {user?.name || "user"}
                   </Text>
                   <Text className="text-typography-600">{user?.email}</Text>
                 </VStack>

@@ -3,65 +3,82 @@ import { Box } from "@/components/ui/box";
 import { Button, ButtonText } from "@/components/ui/button";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { Platform, ScrollView, Text } from "react-native";
+import { ActivityIndicator, Platform, ScrollView, Text } from "react-native";
 import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { Pressable } from "@/components/ui/pressable";
 import { Image } from "react-native";
 import { Divider } from "@/components/ui/divider";
-import { Check, Cross, Eye, EyeOff, EyeOffIcon, InfoIcon, X } from "lucide-react-native";
+import { Check, CheckCircle, Cross, Eye, EyeOff, EyeOffIcon, InfoIcon, X } from "lucide-react-native";
 import { Icon } from "@/components/ui/icon";
 import { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/auth/firebaseConfig";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
-import { GlobalContext} from "@/context/globalContext";
+import { GlobalContext } from "@/context/globalContext";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false)
   const context = useContext(GlobalContext);
   const setUser = context?.setUser;
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [alert, setAlert] = useState({
-    msge: "AlertBox",
-    icon: InfoIcon,
-    type: 'success'
-  })
   const [showAlert, setShowAlert] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState({
+    show: false,
+    icon: CheckCircle,
+    type: "success",
+    message: "Space created successfully",
+  });
 
   const handleAlert = (msg: string, type: string, icon: any) => {
     setAlert({
-      msge: msg,
+      message: msg,
       icon: icon,
-      type
+      type,
+      show: true
     })
-    setShowAlert(true)
     setTimeout(() => {
-      setShowAlert(false)
+      setAlert({ ...alert, show: false })
     }, 3500)
 
 
   }
 
   const handleLogin = async () => {
-    if (!email && !password)
-    {
-      handleAlert("Enter Values!", "error", X)
-      return
+    setLoading(true)
+    if (!email.trim() || !password.trim()) {
+      handleAlert("Please enter both email and password.", "error", X);
+      setLoading(false)
+      return;
     }
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
-      setUser && setUser(userCredential.user);
-      handleAlert("User Logged In", "success", Check)
-      router.replace("/home")
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+      // Fetch user data from backend
+      const response = await fetch(`http://localhost:3000/get-user?email=${encodeURIComponent(email)}`);
+      if (!response.ok) {
+        setLoading(false)
+        throw new Error("Failed to fetch user data.");
+      }
+      const data = await response.json();
+      setUser && setUser(data[0]);
+
+      handleAlert("Logged in successfully!", "success", Check);
+      setLoading(false)
+      router.replace("/home");
+    } catch (err: any) {
+      let message = "Login failed. Please check your credentials.";
+      if (err && err.message) {
+        message = err.message;
+      }
+      setLoading(false)
+      handleAlert(message, "error", X);
     }
-    catch (err: any) {
-      handleAlert(err.toString(), "error", X)
-    }
-  }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-background-0">
@@ -108,7 +125,9 @@ const Login = () => {
             style={{ backgroundColor: "#FF7F40", borderRadius: 50, width: "100%", marginBottom: 20 }}
             onPress={handleLogin}
           >
-            <ButtonText>Login</ButtonText>
+            {loading ?
+              <ActivityIndicator size="small" color="white" /> :
+              <ButtonText>Login</ButtonText>}
           </Button>
           <Button
             size="xl"
@@ -144,17 +163,33 @@ const Login = () => {
             For more information, please see our{" "}
             <Text className="font-bold text-[#1E1B22]">Privacy Policy</Text>
           </Text>
-          <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-          {
-            showAlert &&
-            <Alert className="absolute bottom-1 left-0 right-0" action={alert.type as "muted" | "success" | "error" | "warning" | "info"} variant="solid">
-              <AlertIcon as={alert.icon} />
-              <AlertText>{alert.msge}</AlertText>
-            </Alert>
-          }
-
         </Box>
       </ScrollView>
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
+      {
+        alert.show &&
+        <Box className="absolute bottom-10 w-full px-2 py-3">
+
+          <Box className="border-2 border-red-500 w-full flex bg-red-400 px-3 py-4 rounded-lg flex-row gap-2 items-center shadow-md"
+            style={{
+              backgroundColor: alert.type === "success" ? "#86efac" : "#f87171",
+              borderColor: alert.type === "success" ? "#4ade80" : "#ef4444",
+              borderWidth: 2
+            }}
+          >
+            <Icon as={alert.icon} color={alert.type === "success" ? "green" : "darkred"} size="md" />
+            <Text className="text-red-900 text-lg font-bold"
+              style={{ color: alert.type === "success" ? "#064e3b" : "#7f1d1d" }}
+
+            >
+              {alert.message}
+            </Text>
+
+          </Box>
+        </Box>
+      }
+
+
     </SafeAreaView >
 
   );
