@@ -2,11 +2,9 @@
 
 **Find the best parking spots near you, effortlessly!**
 
-![QuickPark Logo](./assets/images/logo.svg)
-
 ---
 
-QuickPark is a modern, cross-platform mobile app built with Expo, Gluestack UI, and NativeWind. It helps you discover, search, and book the most convenient parking spaces for your vehicle—whether it's a car, bike, truck, van, or auto—right from your phone.
+QuickPark helps you discover, search, and book the most convenient parking spaces for your vehicle—whether it's a car, bike, truck, van, or auto—right from your phone. It also allows users to rent out their own unused parking spaces and earn from them effortlessly.
 
 ---
 
@@ -53,9 +51,69 @@ You can then run the app on:
 
 ## 🖥️ Screenshots
 
-| Home | Map & Spaces | Booking |
-|------|--------------|---------|
-| ![Home](./assets/images/splash.png) | ![Map](./assets/images/noparking.png) | ![Logo](./assets/images/logo.svg) |
+<!-- SIGNUP SECTION -->
+<table>
+  <tr>
+    <td width="50%">
+      <h3>📝 Signup</h3>
+      Create a new account with ease and get started in seconds.
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/105508d5-0bf8-4223-8feb-9248bbccc72d" alt="Signup Screen" width="250" />
+    </td>
+  </tr>
+</table>
+
+<!-- LOGIN SECTION -->
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/716cdca0-037b-4b5b-bf4f-8a716c34a02d"/>
+    </td>
+    <td width="50%">
+      <h3>🔑 Login</h3>
+      Securely sign in to access your personalized dashboard and bookings.
+    </td>
+  </tr>
+</table>
+
+<!-- HOME SECTION -->
+<table>
+  <tr>
+    <td width="50%">
+      <h3>🏠 Home</h3>
+      Browse nearby parking spots, view ratings, and book in just a few taps.
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/8d511882-fd5c-4a18-85a0-c0c35bac0496" alt="Home Screen" width="250" />
+    </td>
+  </tr>
+</table>
+
+<!-- HISTORY SECTION -->
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/589ace09-c718-48a8-ac87-29025626ed3b" alt="History Screen" width="250" />
+    </td>
+    <td width="50%">
+      <h3>📜 History</h3>
+      View your past bookings, rented spaces, and transaction details.
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/e657eefa-8bdb-4908-9f33-684c1b81380c" />
+    </td>
+    <td width="50%">
+     <img src="https://github.com/user-attachments/assets/a23697ed-5cc4-4071-b8af-6c3d56984ce8" />
+    </td>
+  </tr>
+</table>
+
 
 ---
 
@@ -101,25 +159,22 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ## 👥 Contributors
 
+## 👥 Contributors
+
 <p align="left">
-  <a href="https://github.com/mahendrakumarsuthar" target="_blank">
-    <img src="https://avatars.githubusercontent.com/u/10242653?v=4" width="60" alt="Mahendrakumar Suthar" />
-    <br/>
-    <sub><b>Mahendrakumar Suthar</b></sub>
+  <a href="https://github.com/mahendra189" target="_blank">
+    <img src="https://github.com/mahendra189.png" width="60" alt="Mahendrakumar Suthar" />
   </a>
   &nbsp;&nbsp;
-  <a href="https://github.com/aditya-placeholder" target="_blank">
-    <img src="https://avatars.githubusercontent.com/u/00000000?v=4" width="60" alt="Aditya Agrawal" />
-    <br/>
-    <sub><b>Aditya Agrawal</b></sub>
+  <a href="https://github.com/not-your-average-devil" target="_blank">
+    <img src="https://github.com/not-your-average-devil.png" width="60" alt="Aditya Agrawal" />
   </a>
   &nbsp;&nbsp;
-  <a href="https://github.com/ruhaan-placeholder" target="_blank">
-    <img src="https://avatars.githubusercontent.com/u/00000000?v=4" width="60" alt="Ruhaan Sande" />
-    <br/>
-    <sub><b>Ruhaan Sande</b></sub>
+  <a href="https://github.com/Ruhdee" target="_blank">
+    <img src="https://github.com/Ruhdee.png" width="60" alt="Ruhaan Sande" />
   </a>
 </p>
+
 
 ---
 
